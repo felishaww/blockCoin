@@ -35,7 +35,27 @@ h2 {
     color: #fff;
 }
 
-.w-btn {
+.b-btn {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0.7em;
+    text-align: center;
+    background-color: #292A35;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 0;
+    border: 1px solid #1e1e25;
+}
+
+.b-btn:hover {
+    background-color: #1e1e25;
+}
+
+.g-btn {
     display: block;
     width: 100%;
     margin: 8px 0;
@@ -51,7 +71,7 @@ h2 {
     border: 1px solid #21886F;
 }
 
-.w-btn:hover {
+.g-btn:hover {
     background-color: #21886F;
 }
 
