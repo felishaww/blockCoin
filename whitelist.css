@@ -1,0 +1,58 @@
+*:focus {
+    outline: none;
+}
+
+body {
+	font-family: helvetica, arial, 'Lucida Grande', 'Segoe UI', Tahoma, 'DejaVu Sans', sans-serif;
+	background-color: #1E1F2B;
+    color: #fff;
+    padding-left: 10%;
+}
+
+h2 {
+    border: 0;
+    font-size: 54px;
+    font-weight: bold;
+    text-align: left;
+    color: #fff;
+    margin: 0 0 0.3em 0;
+}
+
+.content {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    
+}
+
+.text {
+    color: #fff;
+    opacity: 0.6;
+}
+
+.contact {
+    display: flex;
+    margin-top: 7em;
+}
+
+.mail-icon{
+    height: 80px;
+}
+
+.emails {
+    display: flex;
+    flex-direction: column;
+    height: 80px;
+    justify-content: space-between;
+    margin: 0;
+    padding-left: 2em;
+}
+.emails>p {
+    margin: 0;
+}
+.mails{
+    margin: 0;
+    padding-bottom: 5px;
+}
