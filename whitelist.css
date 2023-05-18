@@ -32,27 +32,53 @@ h2 {
     opacity: 0.6;
 }
 
-.contact {
-    display: flex;
-    margin-top: 7em;
+.g-btn {
+    display: block;
+    width: 200px;
+    margin: 8px 0;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0.7em;
+    text-align: center;
+    background-color: #2BA386;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 0;
+    border: 1px solid #21886F;
 }
 
-.mail-icon{
-    height: 80px;
+.g-btn:hover {
+    background-color: #21886F;
 }
 
-.emails {
-    display: flex;
-    flex-direction: column;
-    height: 80px;
-    justify-content: space-between;
-    margin: 0;
-    padding-left: 2em;
-}
-.emails>p {
-    margin: 0;
-}
-.mails{
-    margin: 0;
-    padding-bottom: 5px;
-}
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  input[type="text"] {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 1em;
+    border: 1px solid rgba(0,0,0,.5);
+    background: #292A35;
+    color: #fff;
+    border-radius: 5px;
+  }
+
+  .list-history {
+    width: 100%;
+    margin: 8px 0;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 1em;
+    border: 1px solid rgba(0,0,0,.5);
+    background: #292A35;
+    color: #fff;
+    border-radius: 5px;
+    height: 30vh;
+  }
