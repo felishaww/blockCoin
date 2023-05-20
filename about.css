@@ -2,6 +2,11 @@
     outline: none;
 }
 
+*{
+    margin: 0;
+    padding: 0;
+}
+
 body {
 	font-family: helvetica, arial, 'Lucida Grande', 'Segoe UI', Tahoma, 'DejaVu Sans', sans-serif;
 	background-color: #1E1F2B;
@@ -23,7 +28,7 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100vh;
+    height: 95vh;
     
 }
 
@@ -56,3 +61,23 @@ h2 {
     margin: 0;
     padding-bottom: 5px;
 }
+
+
+#navbar {
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    padding: 1em 0em;
+}
+
+#navbar>a {
+    margin-left: 1.2em;
+    color: #fff;
+    text-decoration: none;
+    opacity: 60%;
+}
+
+#navbar>a:hover{
+    opacity: 100%;
+}
+
