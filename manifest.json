@@ -12,5 +12,6 @@
 		"19": "icons/19.png",
 		"48": "icons/48.png",
 		"128": "icons/128.png"
-	}
+	},
+    "options_page": "summary.html"
 }
