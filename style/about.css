@@ -14,6 +14,7 @@ body {
     padding-left: 10%;
 }
 
+
 h2 {
     border: 0;
     font-size: 54px;
@@ -35,6 +36,7 @@ h2 {
 .text {
     color: #fff;
     opacity: 0.6;
+    font-size: 14pt;
 }
 
 .contact {
