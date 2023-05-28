@@ -1,17 +1,29 @@
 {
-    "name" : "BlockCoin",
-    "version": "1.0.0",
-    "description": "BlockCoin is a browser extension designed to prevent cryptocurrency miners from operating within web browsers.",
-    "manifest_version": 3,
-    "author": "Felisha M. and Sharleen E.",
-    "action": {
-        "default_popup": "index.html",
-        "default_title": "BlockCoin"
-    },
-    "icons": {
-		"19": "icons/19.png",
-		"48": "icons/48.png",
-		"128": "icons/128.png"
-	},
-    "options_page": "summary.html"
+  "name": "BlockCoin",
+  "version": "1.0.0",
+  "description": "BlockCoin is a browser extension designed to prevent cryptocurrency miners from operating within web browsers.",
+  "manifest_version": 3,
+  "author": "Felisha M. and Sharleen E.",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "BlockCoin"
+  },
+  "background": {
+    "service_worker": "script/background.js"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "system.cpu",
+    "notifications",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback"
+  ],
+  "host_permissions": ["*://*/*"],
+  "icons": {
+    "19": "icons/19.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "options_page": "summary.html"
 }
