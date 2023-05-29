@@ -11,6 +11,15 @@
   "background": {
     "service_worker": "script/background.js"
   },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "blacklist.json"
+      }
+    ]
+  },
   "permissions": [
     "tabs",
     "storage",

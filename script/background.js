@@ -22,17 +22,15 @@ function block(blacklist) {
   const adblockRuleID = 2; // give any id to indetify the rule but must be greater than 1
   chrome.declarativeNetRequest.updateDynamicRules(
     {
-      addRules: [
-        {
-          id: adblockRuleID,
-          action: {
-            type: "block",
-          },
-          condition: {
-            urlFilter: "crypto-webminer.com"
-          },
-          priority: 1,
-        },
+      addRules: [{
+        "id" : adblockRuleID,
+        "priority": 1,
+        "action" : { "type" : "block" },
+        "condition" : {
+            "urlFilter": "*://example.com/*",
+            "resourceTypes": ['main_frame', 'csp_report', 'media', 'object', 'other', 'ping', 'script', 'stylesheet', 'sub_frame', 'webbundle', 'websocket', 'webtransport', 'xmlhttprequest']
+        }
+      }
       ],
       removeRuleIds: [adblockRuleID], // this removes old rule if any
     },
