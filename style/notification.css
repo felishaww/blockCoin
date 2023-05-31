@@ -61,16 +61,24 @@ body {
     text-align: center;
     position: absolute;
     left: 700px; 
-    
-    
-
-    /* width: 5%;
-    text-align: center;
-    cursor: pointer;
-    position: absolute;
-    bottom: 20px;
-    left: 150px; */ 
 }
 .button:hover {
+    filter: brightness(110%);
+  }
+
+.buttonw{
+    background-color: #2BA386;
+    padding: 1rem 3rem; 
+    margin: 200px 0;
+    border: none;
+    border-radius: 0.25rem; 
+    color: white;
+    text-align: center;
+    position: absolute;
+    left: 700px; 
+    
+}
+
+.buttonw:hover {
     filter: brightness(110%);
   }

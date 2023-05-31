@@ -61,7 +61,7 @@ function start() {
         .then(function (response) {
           return response.json();
         })
-        .then(block);
+        .then(block);``
     });
 }
 
