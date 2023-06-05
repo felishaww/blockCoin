@@ -6,13 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
   var summarySection = document.getElementById('summary-section');
   var whitelistSection = document.getElementById('whitelist-section');
   var historySection = document.getElementById('history-section');
-  var aboutSection = document.getElementById('about-section');
 
   // Get the elements for each menu button
   var summaryMenuBtn = document.getElementById('summary-menu');
   var whitelistMenuBtn = document.getElementById('whitelist-menu');
   var historyMenuBtn = document.getElementById('history-menu');
-  var aboutMenuBtn = document.getElementById('about-menu');
 
   // Set the initial active section and menu
   summarySection.style.display = 'block';
@@ -38,10 +36,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   historyMenuBtn.addEventListener('click', function() {
     switchSection('history-menu', historySection);
-  });
-
-  aboutMenuBtn.addEventListener('click', function() {
-    switchSection('about-menu', aboutSection);
   });
 
     var whitelist = document.getElementById('whitelist');

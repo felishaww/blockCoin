@@ -9,7 +9,7 @@ chrome.runtime.onInstalled.addListener(function () {
 
     // Load the blacklist from the JSON file
     function loadBlacklist(callback) {
-      fetch(chrome.runtime.getURL('../blacklist.json'))
+      fetch(chrome.runtime.getURL('blacklist.json'))
         .then(response => response.json())
         .then(data => callback(data))
         .catch(error => console.error('Error loading blacklist:', error));
@@ -26,7 +26,7 @@ chrome.runtime.onInstalled.addListener(function () {
     // Check if the warning page is already open
     function isWarningPageOpen(tabId, callback) {
       chrome.tabs.get(tabId, function (tab) {
-        var warningUrl = chrome.runtime.getURL('notification.html');
+        var warningUrl = chrome.runtime.getURL('warning.html');
         var isOpen = tab.url === warningUrl;
         callback(isOpen);
       });
@@ -58,7 +58,7 @@ chrome.runtime.onInstalled.addListener(function () {
             // Check if the accessed website is on the blacklist
             isBlacklisted(domain, function (blacklisted) {
               if (blacklisted) {
-                var redirectUrl = chrome.runtime.getURL(`notification.html?url=${encodeURIComponent(details.url)}&domain=${encodeURIComponent(domain)}`);
+                var redirectUrl = chrome.runtime.getURL(`warning.html?url=${encodeURIComponent(details.url)}&domain=${encodeURIComponent(domain)}`);
                 chrome.tabs.update(details.tabId, { url: redirectUrl });
 
                 // Update the blocked count

@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BlockCoin Options</title>
+  <link rel="stylesheet" type="text/css" href="options.css">
+</head>
+<body>
+  <div class="navbar">
+    <button class="menu active" id="summary-menu">Summary</button>
+    <button class="menu" id="whitelist-menu">Whitelist</button>
+    <button class="menu" id="history-menu">History</button>
+  </div>
+  <div id="summary-section" class="section active">
+    <h2>Summary</h2>
+    <p>Total Blocked Websites: <span id="blocked-count">0</span></p>
+  </div>
+  <div id="whitelist-section" class="section">
+    <h2>Whitelist</h2>
+  <ul id="whitelist">
+    <!-- Whitelist items will be dynamically added here -->
+  </ul>
+  <div id="add-whitelist">
+    <input type="text" id="whitelist-input" placeholder="Enter URL to whitelist">
+    <button id="add-button">Add</button>
+    <div id="error-message" style="color: red; display: none;"></div>
+  </div>
+  </div>
+  <div id="history-section" class="section">
+    <h2>Blocked History</h2>
+    <ul id="blockedHistory">
+      <!-- Blocked history items will be dynamically added here -->
+    </ul>
+    <button id="delete-all-button">Delete All</button>
+  
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>
