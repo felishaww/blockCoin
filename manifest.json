@@ -11,22 +11,15 @@
   "background": {
     "service_worker": "script/background.js"
   },
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "ruleset_1",
-        "enabled": true,
-        "path": "blacklist.json"
-      }
-    ]
-  },
   "permissions": [
     "tabs",
     "storage",
     "system.cpu",
     "notifications",
     "declarativeNetRequest",
-    "declarativeNetRequestFeedback"
+    "declarativeNetRequestFeedback",
+    "system.cpu",
+    "webNavigation"
   ],
   "host_permissions": ["*://*/*"],
   "icons": {
@@ -34,5 +27,5 @@
     "48": "icons/48.png",
     "128": "icons/128.png"
   },
-  "options_page": "summary.html"
+  "options_page": "options.html"
 }
