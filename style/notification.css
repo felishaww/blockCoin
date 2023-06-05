@@ -63,7 +63,7 @@ body {
     left: 700px; 
 }
 .button:hover {
-    filter: brightness(110%);
+    filter: brightness(90%);
   }
 
 .buttonw{
@@ -80,5 +80,5 @@ body {
 }
 
 .buttonw:hover {
-    filter: brightness(110%);
+    filter: brightness(90%);
   }
