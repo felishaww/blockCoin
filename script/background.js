@@ -1,21 +1,21 @@
-/// Declare redirectedTabs globally
+/// Declare redirectedTabsnya global
 var redirectedTabs = [];
 
-// Function to detect cryptojacking activity
+// Function buat detect cryptojacking
 chrome.runtime.onInstalled.addListener(function () {
   console.log("hey");
-  chrome.storage.sync.get(['whitelist'], function (result) {
+  chrome.storage.sync.get(["whitelist"], function (result) {
     var whitelist = result.whitelist || [];
 
-    // Load the blacklist from the JSON file
+    // Load blacklist dari JSON file
     function loadBlacklist(callback) {
-      fetch(chrome.runtime.getURL('../blacklist.json'))
-        .then(response => response.json())
-        .then(data => callback(data))
-        .catch(error => console.error('Error loading blacklist:', error));
+      fetch(chrome.runtime.getURL("../blacklist.json"))
+        .then((response) => response.json())
+        .then((data) => callback(data))
+        .catch((error) => console.error("Error loading blacklist:", error));
     }
 
-    // Check if the accessed website is on the blacklist
+    // Cek accessed websitenya ada di blacklist ga
     function isBlacklisted(url, callback) {
       loadBlacklist(function (blacklist) {
         var isBlacklisted = blacklist.includes(url);
@@ -23,10 +23,10 @@ chrome.runtime.onInstalled.addListener(function () {
       });
     }
 
-    // Check if the warning page is already open
+    // Cek apakah  warning page udah open
     function isWarningPageOpen(tabId, callback) {
       chrome.tabs.get(tabId, function (tab) {
-        var warningUrl = chrome.runtime.getURL('notification.html');
+        var warningUrl = chrome.runtime.getURL("notification.html");
         var isOpen = tab.url === warningUrl;
         callback(isOpen);
       });
@@ -38,14 +38,18 @@ chrome.runtime.onInstalled.addListener(function () {
         var domain = url.hostname;
 
         // Check if the extension is disabled
-        chrome.storage.sync.get(['disabled'], function (data) {
+        chrome.storage.sync.get(["disabled"], function (data) {
           var isDisabled = data.disabled || false;
           if (isDisabled) {
             return;
           }
 
           // Check if the accessed website is on the whitelist
-          if (whitelist.some(function (item) { return domain.includes(item); })) {
+          if (
+            whitelist.some(function (item) {
+              return domain.includes(item);
+            })
+          ) {
             return;
           }
 
@@ -58,17 +62,21 @@ chrome.runtime.onInstalled.addListener(function () {
             // Check if the accessed website is on the blacklist
             isBlacklisted(domain, function (blacklisted) {
               if (blacklisted) {
-                var redirectUrl = chrome.runtime.getURL(`notification.html?url=${encodeURIComponent(details.url)}&domain=${encodeURIComponent(domain)}`);
+                var redirectUrl = chrome.runtime.getURL(
+                  `notification.html?url=${encodeURIComponent(
+                    details.url
+                  )}&domain=${encodeURIComponent(domain)}`
+                );
                 chrome.tabs.update(details.tabId, { url: redirectUrl });
 
                 // Update the blocked count
-                chrome.storage.sync.get(['blockedCount'], function (data) {
+                chrome.storage.sync.get(["blockedCount"], function (data) {
                   var blockedCount = data.blockedCount || 0;
                   chrome.storage.sync.set({ blockedCount: blockedCount + 1 });
                 });
 
                 // Update the blocked URL history
-                chrome.storage.sync.get(['blockedHistory'], function (data) {
+                chrome.storage.sync.get(["blockedHistory"], function (data) {
                   var blockedHistory = data.blockedHistory || [];
                   blockedHistory.push(details.url);
                   chrome.storage.sync.set({ blockedHistory: blockedHistory });
@@ -78,14 +86,14 @@ chrome.runtime.onInstalled.addListener(function () {
                 redirectedTabs.push(details.tabId);
 
                 // Start CPU monitoring for the redirected tab
-                startCPUUsageMonitoring(details.tabId);
+                //startCPUUsageMonitoring(details.tabId);
               }
             });
           });
         });
       },
       {
-        url: [{ schemes: ['http', 'https'] }],
+        url: [{ schemes: ["http", "https"] }],
       }
     );
   });
@@ -93,16 +101,16 @@ chrome.runtime.onInstalled.addListener(function () {
 
 // Message listener from the warning page
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
-  if (message.type === 'continue') {
+  if (message.type === "continue") {
     // Remove the redirected tab ID from the redirectedTabs array
     var index = redirectedTabs.indexOf(sender.tab.id);
     if (index !== -1) {
       redirectedTabs.splice(index, 1);
     }
-  } else if (message.type === 'whitelist') {
+  } else if (message.type === "whitelist") {
     var domain = message.domain;
     // Add the domain to the whitelist
-    chrome.storage.sync.get(['whitelist'], function (data) {
+    chrome.storage.sync.get(["whitelist"], function (data) {
       var whitelist = data.whitelist || [];
       whitelist.push(domain);
       chrome.storage.sync.set({ whitelist: whitelist });
@@ -144,20 +152,108 @@ function startCPUUsageMonitoring(tabId) {
       // Calculate the average CPU usage
       var averageUsage = calculateAverageUsage(cpuUsageSamples);
       console.log(averageUsage + "avg avggg");
+
+      // Check if average usage exceeds 50%
+      if (averageUsage > 50) {
+        // Redirect the tab to the warning page
+        var redirectUrl = chrome.runtime.getURL("notification.html");
+        chrome.tabs.update(tabId, { url: redirectUrl });
+
+        // Remove the redirected tab ID from the redirectedTabs array
+        var index = redirectedTabs.indexOf(tabId);
+        if (index !== -1) {
+          redirectedTabs.splice(index, 1);
+        }
+      }
     });
   }, 1000);
 }
 
-// Start monitoring CPU usage for all redirected tabs
-function monitorCPUUsage() {
+// Function to check if a JavaScript file contains cryptojacking libraries
+function checkCryptojackingLibraries(fileContent) {
+  // List of known cryptojacking libraries
+  var cryptojackingLibraries = [
+    "coinhive.com",
+    "cryptoloot.pro",
+    "minero.cc",
+    "miner.start()",
+    "miner.stop()",
+    "Monero",
+    "WebMinePool",
+    "cryptonight",
+    "cryptonight-lite",
+    "cryptonight-jit",
+    "cryptonight.browser",
+    "cryptonight.worker",
+    "javascript-miner",
+    "throttle",
+    "CoinIMP",
+    "crypto",
+    "md5",
+    "sha256",
+    "IntenseCoin",
+    "mybrowsercoins.com",
+    "minemytraffic.com",
+    "mine.js",
+    "coin-hive.com"
+    // Add more cryptojacking libraries here
+  ];
+
+  // Check if the file content contains any cryptojacking library
+  var detectedLibraries = [];
+  cryptojackingLibraries.forEach(function (library) {
+    if (fileContent.includes(library)) {
+      detectedLibraries.push(library);
+    }
+  });
+
+  return detectedLibraries;
+}
+
+// Function to monitor network requests and detect cryptojacking libraries
+function monitorNetworkRequests(tabId) {
+  // Monitor network requests
+  chrome.webRequest.onCompleted.addListener(
+    function (details) {
+      if (details.tabId === tabId && details.type === "script") {
+        // Fetch the file content
+        fetch(details.url)
+          .then((response) => response.text())
+          .then((data) => {
+            // Check if the file contains any cryptojacking library
+            var detectedLibraries = checkCryptojackingLibraries(data);
+            if (detectedLibraries.length > 0) {
+              // Redirect the tab to the warning page
+              var redirectUrl = chrome.runtime.getURL("notification.html");
+              chrome.tabs.update(tabId, { url: redirectUrl });
+
+              // Remove the redirected tab ID from the redirectedTabs array
+              var index = redirectedTabs.indexOf(tabId);
+              if (index !== -1) {
+                redirectedTabs.splice(index, 1);
+              }
+            }
+          })
+          .catch((error) =>
+            console.error("Error fetching file content:", error)
+          );
+      }
+    },
+    { urls: ["<all_urls>"] }
+  );
+}
+
+// Start monitoring CPU usage and network requests for all redirected tabs
+function monitorCPUUsageAndNetworkRequests() {
   chrome.tabs.query({}, function (tabs) {
     for (var i = 0; i < tabs.length; i++) {
       if (redirectedTabs.includes(tabs[i].id)) {
-        startCPUUsageMonitoring(tabs[i].id);
+        //startCPUUsageMonitoring(tabs[i].id);
+        monitorNetworkRequests(tabs[i].id);
       }
     }
   });
 }
 
-// Start monitoring CPU usage
-//monitorCPUUsage();
+// Start monitoring CPU usage and network requests
+//monitorCPUUsageAndNetworkRequests();
