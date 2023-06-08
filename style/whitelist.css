@@ -28,8 +28,7 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 95vh;
-    
+    height: 40vh;   
 }
 
 .text {
@@ -39,6 +38,19 @@ h2 {
 
 .g-btn {
     display: block;
+    width: 120px;
+    margin: 8px 0;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0.7em;
+    text-align: center;
+    background-color: #2ba386;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 0;
+    border: 1px solid #21886f;
+    /* display: block;
     width: 200px;
     margin: 8px 0;
     font-size: 13px;
@@ -50,7 +62,7 @@ h2 {
     border-radius: 4px;
     cursor: pointer;
     border: 0;
-    border: 1px solid #21886F;
+    border: 1px solid #21886F; */
 }
 
 .g-btn:hover {
@@ -64,7 +76,7 @@ input::-moz-focus-inner {
 
   input[type="text"] {
     display: block;
-    width: 100%;
+    width: 50%;
     margin: 8px 0;
     font-size: 13px;
     font-weight: normal;
@@ -76,7 +88,7 @@ input::-moz-focus-inner {
   }
 
   .list-history {
-    width: 100%;
+    width: 50%;
     margin: 8px 0;
     font-size: 13px;
     font-weight: normal;

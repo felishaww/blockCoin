@@ -17,16 +17,18 @@
             <a href="./about.html" class="nav-item">About</a>
 
     </div>
-    <div class="content">
+    <div class="whitelist-section">
         <h2>Whitelist</h2>
         <p class="text">Blocking activity will be disabled for domains listed below.</p>
         <div class="input-domain">
             <input type="text" placeholder="e.g. www.domain.com, domain.com" />
         </div>
-        <button id="settingsBtn" class="g-btn"><i class="fa fa-wrench" aria-hidden="true"></i>&nbsp Add Domain</button>
+            <div id="error-message" style="color: red; display: none"></div>
+            <button id="settingsBtn" class="g-btn"><i class="fa fa-wrench" aria-hidden="true"></i>&nbsp Add Domain</button>
         <div class="list-history"></div>
         <button id="settingsBtn" class="g-btn"><i class="fa fa-wrench" aria-hidden="true"></i>&nbsp Delete All</button>
-        </div>
-    </div>
+          </div>
+          
+    <script src="./script/options.js"></script>
 </body>
 </html>
