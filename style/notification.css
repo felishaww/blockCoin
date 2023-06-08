@@ -52,30 +52,34 @@ body {
     font-size: 20px;
 }
 
-.button {
+.button-g {
     background-color: #2BA386;
     padding: 1rem 3rem;
-    margin: 4vh 0vh;
+    margin: 3vh 0vh;
     border: none;
     border-radius: 0.25rem; 
     color: white;
     text-align: center;
+    width: 250px;
 }
-.button:hover {
-    filter: brightness(90%);
+.button-g:hover {
+    filter: brightness(80%);
   }
 
-.buttonw{
-    background-color: #2BA386;
+.button-b{
+    border: 1px solid #1e1e25;
+    background-color: #292a35;
     padding: 1rem 3rem;
     border: none;
     border-radius: 0.25rem; 
     color: white;
     text-align: center;
+    width: 250px;
+    margin-bottom: 3vh;
     
 }
 
-.buttonw:hover {
+.button-b:hover {
     filter: brightness(90%);
 }
 
@@ -92,4 +96,11 @@ body {
     flex-direction: column;
     justify-content: center;
     height: 80vh;
+}
+
+#whitelistOpt{
+    text-align: center;
+    font-weight: normal; 
+    color: #fff; 
+    font-size: 14px;
 }

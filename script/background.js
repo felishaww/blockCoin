@@ -128,5 +128,16 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
         });
       });
     });
+  } else if (message.type === "goback") {
+    // Go back to the previous site
+    chrome.tabs.get(sender.tab.id, function (tab) {
+      if (tab && tab.url) {
+        chrome.tabs.goBack(tab.id, function () {
+          if (chrome.runtime.lastError) {
+            chrome.tabs.update(sender.tab.id, { url: "about:blank" });
+          }
+        });
+      }
+    });
   }
 });

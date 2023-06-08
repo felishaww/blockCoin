@@ -97,11 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.runtime.sendMessage({ type: 'continue', url: url });
     });
   
-    // Whitelist button listener
-    var whitelistButton = document.getElementById('whitelistBtn');
-    whitelistButton.addEventListener('click', function() {
-      chrome.runtime.sendMessage({ type: 'whitelist', domain: domain });
+    // Goback button listener
+    var gobackButton = document.getElementById('gobackBtn');
+    gobackButton.addEventListener('click', function() {
+      chrome.runtime.sendMessage({ type: 'goback' });
     });
+
+    
   });
   
 
