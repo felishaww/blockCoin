@@ -7,17 +7,18 @@ body {
     font-family: helvetica, arial, 'Lucida Grande', 'Segoe UI', Tahoma, 'DejaVu Sans', sans-serif;
     background-color: #1E1F2B;
     color: #fff;
-    padding-left: 10%;
 }
 
 .wrap {
     padding-bottom: 8px;
     display: flex;
     justify-content: left;
+    align-items: center;
     padding-top: 20px;
+    margin-left: 3vh;
   }
 
-.content #title{
+#title{
     font-size: 20px;
     font-weight: bold;
     padding-left: 10px;
@@ -53,14 +54,12 @@ body {
 
 .button {
     background-color: #2BA386;
-    padding: 1rem 3rem; 
-    margin: 100px 0;
+    padding: 1rem 3rem;
+    margin: 4vh 0vh;
     border: none;
     border-radius: 0.25rem; 
     color: white;
     text-align: center;
-    position: absolute;
-    left: 700px; 
 }
 .button:hover {
     filter: brightness(90%);
@@ -68,17 +67,29 @@ body {
 
 .buttonw{
     background-color: #2BA386;
-    padding: 1rem 3rem; 
-    margin: 200px 0;
+    padding: 1rem 3rem;
     border: none;
     border-radius: 0.25rem; 
     color: white;
     text-align: center;
-    position: absolute;
-    left: 700px; 
     
 }
 
 .buttonw:hover {
     filter: brightness(90%);
-  }
+}
+
+.buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#content{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80vh;
+}

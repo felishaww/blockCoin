@@ -15,32 +15,37 @@
   </head>
   <body>
     <div class="wrap">
-      <div class="logo"><img src="icons/128.png" width="48" /></div>
-      <div class="content"><span id="title">BlockCoin</span><br /></div>
+      <div class="logo"><img src="icons/128.png" width="36" /></div>
+      <div><span id="title">BlockCoin</span><br /></div>
     </div>
 
-    <div class="text-title">
-      <h1>Website blocked due to Cryptojacking</h1>
+    <div id="content">
+      <div class="text-title">
+        <h1>Website blocked due to Cryptojacking</h1>
+      </div>
+      <div class="link">
+        <h3>Website blocked: <span id="url"></span></h3>
+        <h3>Domain: <span id="domain"></span></h3>
+      </div>
+      <div class="text">
+        <p>
+          Blockcoin has restricted access to this page due to the<br />
+          potential presence of malicious activity.
+        </p>
+      </div>
+      <div class="text-not">
+        <p>
+          We highly advice against proceeding further. Visiting this<br />
+          site could potentially compromise your safety.
+        </p>
+        <div class="buttons">
+            <button id="continueBtn" class="button">
+                Continue to this website
+              </button>
+              <button id="whitelistBtn" class="buttonw">Add to Whitelist</button>
+        </div>
+      </div>
     </div>
-    <div class="link">
-      <h3>Website blocked: <span id="url"></span></h3>
-      <h3>Domain: <span id="domain"></span></h3>
-    </div>
-    <div class="text">
-      <p>
-        Blockcoin has restricted access to this page due to the<br />
-        potential presence of malicious activity.
-      </p>
-    </div>
-    <div class="text-not">
-      <p>
-        We highly advice against proceeding further. Visiting this<br />
-        site could potentially compromise your safety.
-      </p>
-    </div>
-
-    <button id="continueBtn" class="button">Continue to this website</button>
-    <button id="whitelistBtn" class="buttonw">Add to Whitelist</button>
 
     <script src="./script/notification.js"></script>
   </body>
