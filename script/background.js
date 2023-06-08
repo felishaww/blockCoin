@@ -93,20 +93,26 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     // Get the URL & domain from the query string
     var urlParams = new URLSearchParams(message);
     var blockedUrl = urlParams.get("url");
-    let blockedDomain = (new URL(blockedUrl));
-    blockedDomain = blockedDomain.hostname;
+    let blockedDomain = new URL(blockedUrl).hostname;
+
+    // Check if there is an existing entry with the same tab ID
+    var existingTab = redirectedTabs.find(function (tab) {
+      return tab.tabId === sender.tab.id;
+    });
+
+    if (existingTab) {
+      // Remove the existing entry with the same tab ID
+      redirectedTabs = redirectedTabs.filter(function (tab) {
+        return tab.tabId !== sender.tab.id;
+      });
+    }
 
     // Add the redirected tab ID and domain to the redirectedTabs array
     redirectedTabs.push({ tabId: sender.tab.id, domain: blockedDomain });
-    console.log("sender.tab.id: " + sender.tab.id);
-    console.log("message.domain: " + blockedDomain);
 
     // Redirect the tab to the blocked URL
     chrome.tabs.update(sender.tab.id, { url: blockedUrl });
-
-    console.log("continue " + blockedUrl);
   } else if (message.type === "whitelist") {
-    console.log("whitelist");
     var domain = message.domain;
 
     // Add the domain to the whitelist
