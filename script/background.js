@@ -1,5 +1,3 @@
-// Declare redirectedTabs global
-var redirectedTabs = [];
 
 // Load the blacklist from the JSON file
 function loadBlacklist(callback) {
@@ -18,12 +16,6 @@ function isBlacklisted(url, callback) {
 }
 
 // Function to redirect the tab to the warning page
-function redirectTab(tabId) {
-  var redirectUrl = chrome.runtime.getURL("notification.html");
-  chrome.tabs.update(tabId, { url: redirectUrl });
-}
-
-// Function to redirect the tab to the blocked page
 function blockTab(tabId, url, domain) {
   var redirectUrl = chrome.runtime.getURL(
     `notification.html?url=${encodeURIComponent(url)}&domain=${encodeURIComponent(domain)}`
@@ -71,9 +63,6 @@ function handleNavigation(details) {
       isBlacklisted(domain, function (blacklisted) {
         if (blacklisted) {
           blockTab(details.tabId, details.url, domain);
-        } else {
-          // Store the tab ID of the redirected tab
-          redirectedTabs.push(details.tabId);
         }
       });
     });
@@ -88,11 +77,8 @@ chrome.webNavigation.onBeforeNavigate.addListener(handleNavigation, {
 // Message listener from the warning page
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   if (message.type === "continue") {
-    // Remove the redirected tab ID from the redirectedTabs array
-    var index = redirectedTabs.indexOf(sender.tab.id);
-    if (index !== -1) {
-      redirectedTabs.splice(index, 1);
-    }
+    //continue access the website
+    console.log("continue");
   } else if (message.type === "whitelist") {
     var domain = message.domain;
 
