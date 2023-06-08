@@ -62,9 +62,14 @@ function handleNavigation(details) {
       isBlacklisted(domain, function (blacklisted) {
         if (blacklisted) {
           // Check if the tab has been redirected previously
-          if (redirectedTabs.includes(details.tabId)) {
+          if (redirectedTabs.some(tab => tab.tabId === details.tabId && tab.domain === domain)) {
             // The warning page has sent a "continue" message, allow access
             return;
+          } else {
+            console.log("redirectedTabs: " + redirectedTabs);
+            console.log("details.tabId: " + details.tabId);
+            console.log("domain: " + domain);
+            console.log("no");
           }
 
           blockTab(details.tabId, details.url, domain);
@@ -85,19 +90,21 @@ chrome.webNavigation.onBeforeNavigate.addListener(handleNavigation, {
 // Message listener from the warning page
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
   if (message.type === "continue") {
-    // Add the redirected tab ID to the redirectedTabs array
-    redirectedTabs.push(sender.tab.id);
-
-    // Get the URL from the query string
+    // Get the URL & domain from the query string
     var urlParams = new URLSearchParams(message);
-    console.log("urlParams: " + urlParams);
-    var blockedUrl = urlParams.get('url');
-    console.log("continue" + blockedUrl);
+    var blockedUrl = urlParams.get("url");
+    let blockedDomain = (new URL(blockedUrl));
+    blockedDomain = blockedDomain.hostname;
+
+    // Add the redirected tab ID and domain to the redirectedTabs array
+    redirectedTabs.push({ tabId: sender.tab.id, domain: blockedDomain });
+    console.log("sender.tab.id: " + sender.tab.id);
+    console.log("message.domain: " + blockedDomain);
 
     // Redirect the tab to the blocked URL
     chrome.tabs.update(sender.tab.id, { url: blockedUrl });
 
-    
+    console.log("continue " + blockedUrl);
   } else if (message.type === "whitelist") {
     console.log("whitelist");
     var domain = message.domain;
