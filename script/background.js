@@ -17,7 +17,9 @@ function isBlacklisted(url, callback) {
 // Function to redirect the tab to the warning page
 function blockTab(tabId, url, domain) {
   var redirectUrl = chrome.runtime.getURL(
-    `notification.html?url=${encodeURIComponent(url)}&domain=${encodeURIComponent(domain)}`
+    `notification.html?url=${encodeURIComponent(
+      url
+    )}&domain=${encodeURIComponent(domain)}`
   );
   chrome.tabs.update(tabId, { url: redirectUrl });
 
@@ -62,7 +64,11 @@ function handleNavigation(details) {
       isBlacklisted(domain, function (blacklisted) {
         if (blacklisted) {
           // Check if the tab has been redirected previously
-          if (redirectedTabs.some(tab => tab.tabId === details.tabId && tab.domain === domain)) {
+          if (
+            redirectedTabs.some(
+              (tab) => tab.tabId === details.tabId && tab.domain === domain
+            )
+          ) {
             // The warning page has sent a "continue" message, allow access
             return;
           } else {
@@ -112,24 +118,29 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     // Add the redirected tab ID and domain to the redirectedTabs array
     redirectedTabs.push({ tabId: sender.tab.id, domain: blockedDomain });
 
+    if (isWhitelisted && blockedDomain) {
+      // Add the domain to the whitelist
+      chrome.storage.sync.get(["whitelist"], function (data) {
+        var whitelist = data.whitelist || [];
+        whitelist.push(blockedDomain);
+        chrome.storage.sync.set({ whitelist: whitelist }, function () {
+          // Update the whitelist immediately after it's modified
+          chrome.webNavigation.getAllFrames(
+            { tabId: sender.tab.id },
+            function (frames) {
+              frames.forEach(function (frame) {
+                handleNavigation({ tabId: sender.tab.id, url: frame.url });
+              });
+            }
+          );
+        });
+      });
+    }
+
     // Redirect the tab to the blocked URL
     chrome.tabs.update(sender.tab.id, { url: blockedUrl });
   } else if (message.type === "whitelist") {
     var domain = message.domain;
-
-    // Add the domain to the whitelist
-    chrome.storage.sync.get(["whitelist"], function (data) {
-      var whitelist = data.whitelist || [];
-      whitelist.push(domain);
-      chrome.storage.sync.set({ whitelist: whitelist }, function () {
-        // Update the whitelist immediately after it's modified
-        chrome.webNavigation.getAllFrames({ tabId: sender.tab.id }, function (frames) {
-          frames.forEach(function (frame) {
-            handleNavigation({ tabId: sender.tab.id, url: frame.url });
-          });
-        });
-      });
-    });
   } else if (message.type === "goback") {
     // Go back to the previous site
     chrome.tabs.get(sender.tab.id, function (tab) {
