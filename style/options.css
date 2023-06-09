@@ -26,6 +26,7 @@ h2 {
 
 p {
   font-size: 12pt;
+  margin-bottom: 2em;
 }
 
 .section {
@@ -72,7 +73,7 @@ p {
   display: flex;
   align-items: center;
   padding: 2em 0em;
-  margin-bottom: 10em;
+  margin-bottom: 3em;
 }
 
 .navbar > button {
@@ -94,6 +95,33 @@ p {
   opacity: 100%;
   border-bottom: 2px solid #fff;
 }
+
+input[type="text"] {
+  display: block;
+  width: 70%;
+  margin: 8px 0;
+  font-size: 13px;
+  font-weight: normal;
+  padding: 1em;
+  border: 1px solid rgba(0,0,0,.5);
+  background: #292A35;
+  color: #fff;
+  border-radius: 5px;
+  margin-bottom: 2em;
+}
+.list-history {
+  width: 70%;
+  margin: 8px 0;
+  font-size: 13px;
+  font-weight: normal;
+  padding: 1em;
+  border: 1px solid rgba(0,0,0,.5);
+  background: #292A35;
+  color: #fff;
+  border-radius: 5px;
+  height: 30vh;
+}
+
 
 .btn {
   display: block;
@@ -138,3 +166,5 @@ p {
     margin: 5px 0px;
     padding: 10px;
   }
+
+ 

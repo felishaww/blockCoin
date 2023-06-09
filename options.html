@@ -32,16 +32,23 @@
     <div id="whitelist-section" class="section">
       <h2>Whitelist</h2>
       <ul id="whitelist">
+      <p class="text-whitelist">Blocking activity will be disabled for domains listed below.</p>
+      <div class="input-domain">
         <!-- Whitelist items will be dynamically added here -->
       </ul>
       <div id="add-whitelist">
         <input
           type="text"
           id="whitelist-input"
-          placeholder="Enter URL to whitelist"
+          placeholder="e.g. www.domain.com, domain.com"
         />
-        <button id="add-button" class="btn">Add</button>
+        <button id="add-button" class="btn"><i class="fa fa-wrench" aria-hidden="true"></i>&nbsp + Add Domain</button>
+        <div class="list-history"></div>
         <div id="error-message" style="color: red; display: none"></div>
+        <div class="list-history"></div>
+        <!-- <button id="settingsBtn" class="btn"> -->
+        <button id="settingsBtn" class="btn"><i class="fa fa-wrench" aria-hidden="true"></i>&nbsp - Delete All</button>
+          </div>
       </div>
     </div>
 
