@@ -91,10 +91,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var domainElement = document.getElementById('domain');
     urlElement.textContent = url;
     domainElement.textContent = domain;
-  
+
+
     // Continue button listener
     continueButton.addEventListener('click', function() {
-      chrome.runtime.sendMessage({ type: 'continue', url: url });
+        var isWhitelisted = document.getElementById("whitelistRadio").checked;
+      chrome.runtime.sendMessage({ type: 'continue', url: url, whitelist: isWhitelisted });
     });
   
     // Goback button listener

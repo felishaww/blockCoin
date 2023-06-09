@@ -94,6 +94,8 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     var urlParams = new URLSearchParams(message);
     var blockedUrl = urlParams.get("url");
     let blockedDomain = new URL(blockedUrl).hostname;
+    var isWhitelisted = message.whitelist;
+    console.log("iswhitelisted " + isWhitelisted);
 
     // Check if there is an existing entry with the same tab ID
     var existingTab = redirectedTabs.find(function (tab) {
