@@ -167,4 +167,16 @@ input[type="text"] {
     padding: 10px;
   }
 
+  #whitelist>li {
+    height: 15px;
+    font-size: 13px;
+    font-weight: normal;
+    background: #393b48;
+    color: #fff;
+    border-radius: 5px;
+    list-style: none;
+    margin: 5px 0px;
+    padding: 10px;
+  }
+
  
