@@ -179,4 +179,8 @@ input[type="text"] {
     padding: 10px;
   }
 
+  #whitelist>li>button {
+    float: right;
+  }
+
  
