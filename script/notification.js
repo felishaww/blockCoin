@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     urlElement.textContent = url;
     domainElement.textContent = domain;
 
-
     // Continue button listener
     continueButton.addEventListener('click', function() {
         var isWhitelisted = document.getElementById("whitelistRadio").checked;
