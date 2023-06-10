@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
       chrome.storage.sync.set({ whitelist: [] });
 
       // Clear the whitelist items on the options page
-      blockedHistory.innerHTML = "";
+      whitelist.innerHTML = "";
     }
   });
 
