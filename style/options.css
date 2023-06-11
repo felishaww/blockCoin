@@ -98,30 +98,29 @@ p {
 
 input[type="text"] {
   display: block;
-  width: 70%;
+  width: 90%;
   margin: 8px 0;
   font-size: 13px;
   font-weight: normal;
   padding: 1em;
-  border: 1px solid rgba(0,0,0,.5);
-  background: #292A35;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background: #292a35;
   color: #fff;
   border-radius: 5px;
   margin-bottom: 2em;
 }
 .list-history {
-  width: 70%;
+  width: 90%;
   margin: 8px 0;
   font-size: 13px;
   font-weight: normal;
   padding: 1em;
-  border: 1px solid rgba(0,0,0,.5);
-  background: #292A35;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background: #292a35;
   color: #fff;
   border-radius: 5px;
   height: 30vh;
 }
-
 
 .btn {
   display: block;
@@ -143,44 +142,53 @@ input[type="text"] {
 }
 
 #blockedHistory {
-  min-height: 300px; 
+  min-height: 300px;
   height: auto;
   overflow: auto;
   font-size: 13px;
   font-weight: normal;
   padding: 1em;
-  background: #292A35;
+  background: #292a35;
   color: #fff;
   border-radius: 5px;
   margin-bottom: 3em;
 }
 
-#blockedHistory>li {
-    height: 15px;
-    font-size: 13px;
-    font-weight: normal;
-    background: #393b48;
-    color: #fff;
-    border-radius: 5px;
-    list-style: none;
-    margin: 5px 0px;
-    padding: 10px;
-  }
+#blockedHistory > li {
+  height: 15px;
+  font-size: 13px;
+  font-weight: normal;
+  background: #393b48;
+  color: #fff;
+  border-radius: 5px;
+  list-style: none;
+  margin: 5px 0px;
+  padding: 10px;
+}
 
-  #whitelist>li {
-    height: 15px;
-    font-size: 13px;
-    font-weight: normal;
-    background: #393b48;
-    color: #fff;
-    border-radius: 5px;
-    list-style: none;
-    margin: 5px 0px;
-    padding: 10px;
-  }
+#whitelist > li {
+  height: 25px;
+  font-size: 13px;
+  font-weight: normal;
+  background: #393b48;
+  color: #fff;
+  border-radius: 5px;
+  list-style: none;
+  margin: 5px 0px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  #whitelist>li>button {
-    float: right;
-  }
-
- 
+#whitelist > li > button {
+  background-color: #2ba386;
+  padding: 4px;
+  text-decoration: none;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+}
+#whitelist > li > button:hover {
+  background-color: #21886f;
+}
