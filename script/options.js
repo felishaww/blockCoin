@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialize the active menu
+  // Initialize the default active menu
   var activeMenu = "summary-menu";
 
   // Get the elements for each section

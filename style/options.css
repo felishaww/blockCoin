@@ -96,6 +96,10 @@ p {
   border-bottom: 2px solid #fff;
 }
 
+.hide {
+  display: none;
+}
+
 input[type="text"] {
   display: block;
   width: 90%;
