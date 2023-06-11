@@ -189,6 +189,11 @@ input[type="text"] {
   border-radius: 3px;
   color: #fff;
 }
+
 #whitelist > li > button:hover {
   background-color: #21886f;
+}
+
+.text-whitelist {
+  opacity: 60%;
 }
