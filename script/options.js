@@ -170,4 +170,22 @@ document.addEventListener("DOMContentLoaded", function () {
       blockedHistoryList.appendChild(listItem);
     }
   }
+
+  var blockedCount = document.getElementById('blockedCount');
+  // Update the blocked count
+  function updateBlockedCount() {
+    // Fetch the blocked count from storage and update the DOM
+    chrome.storage.sync.get('blockedCount', function(data) {
+      blockedCount.textContent = data.blockedCount || 0;
+    });
+  }
+    // Update the blocked count initially
+    updateBlockedCount();
+  
+    // Listen for changes to the blocked count
+    chrome.storage.onChanged.addListener(function(changes) {
+      if (changes.blockedCount) {
+        updateBlockedCount();
+      }
+    });
 });
