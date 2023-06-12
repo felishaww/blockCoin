@@ -32,7 +32,7 @@ function blockTab(tabId, url, domain) {
   // Update the blocked URL history
   chrome.storage.sync.get(["blockedHistory"], function (data) {
     var blockedHistory = data.blockedHistory || [];
-    blockedHistory.push(url);
+    blockedHistory.push(domain);
     chrome.storage.sync.set({ blockedHistory: blockedHistory });
   });
 }
@@ -79,6 +79,10 @@ function handleNavigation(details) {
           }
 
           blockTab(details.tabId, details.url, domain);
+        } else {
+          // The website is not blacklisted, scan resources for cryptojacking detection
+          console.log("sinii");
+          scanResources(details.tabId, details.url, domain); // Pass the necessary information
         }
       });
     });
@@ -92,6 +96,69 @@ var redirectedTabs = [];
 chrome.webNavigation.onBeforeNavigate.addListener(handleNavigation, {
   url: [{ schemes: ["http", "https"] }],
 });
+
+// Listen for tab navigation events
+chrome.webNavigation.onCompleted.addListener(handleNavigation, {
+  url: [{ schemes: ["http", "https"] }],
+});
+
+// Function to scan text-based resources for cryptojacking detection
+async function scanResources(tabId, url, domain) {
+  console.log("Scanning resource:", url);
+
+  try {
+    // Fetch the resource content
+    const response = await fetch(url);
+    const text = await response.text();
+
+    // Define cryptojacking keywords
+    const cryptojackingKeywords = [
+      "miner.start",
+      "deepMiner.j",
+      "deepMiner.min.j",
+      "?proxy=wss://",
+      "?proxy=ws://",
+      "coinhive.min.js",
+      "monero-miner.js",
+      "wasmminer.wasm",
+      "wasmminer.js",
+      "cn-asmjs.min.js",
+      "plugins/aj-cryptominer",
+      "plugins/ajcryptominer",
+      "plugins/wp-monero-miner-pro",
+      "lib/crlt.js",
+      "pool/direct.js",
+      "n.2.1.js",
+      "n.2.1.l*.js",
+      "gridcash.js",
+      "worker-asmjs.min.js",
+      "?perfekt=wss://",
+      "vbb/me0w.js",
+      "webmr.js",
+      "webxmr.js",
+      "miner.js",
+      "webmr4.js",
+      "static/js/tpb.js",
+      "lib/crypta.js",
+      "bitrix/js/main/core/core_tasker.js",
+      "bitrix/js/main/core/core_loader.js"
+    ];
+
+    // Check if any keyword is present in the resource content
+    const detectedKeywords = cryptojackingKeywords.filter((keyword) =>
+      text.includes(keyword)
+    );
+
+    if (detectedKeywords.length > 0) {
+      console.log("Cryptojacking detected in resource:", url);
+      console.log("Detected keywords:", detectedKeywords);
+      // Take appropriate action (e.g., block the tab)
+      blockTab(tabId, url, domain);
+    }
+  } catch (error) {
+    console.error("Error fetching resource:", error);
+  }
+}
 
 // Message listener from the warning page
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
