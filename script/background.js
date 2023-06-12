@@ -59,32 +59,32 @@ function handleNavigation(details) {
       if (isWhitelisted) {
         return;
       }
+      if (
+        redirectedTabs.some(
+          (tab) => tab.tabId === details.tabId && tab.domain === domain
+        )
+      ) {
+        // The warning page has sent a "continue" message, allow access
+        return;
+      } else {
+        // Check if the accessed website is on the blacklist
+        isBlacklisted(domain, function (blacklisted) {
+          if (blacklisted) {
+            // Check if the tab has been redirected previously
 
-      // Check if the accessed website is on the blacklist
-      isBlacklisted(domain, function (blacklisted) {
-        if (blacklisted) {
-          // Check if the tab has been redirected previously
-          if (
-            redirectedTabs.some(
-              (tab) => tab.tabId === details.tabId && tab.domain === domain
-            )
-          ) {
-            // The warning page has sent a "continue" message, allow access
-            return;
-          } else {
             console.log("redirectedTabs: " + redirectedTabs);
             console.log("details.tabId: " + details.tabId);
             console.log("domain: " + domain);
             console.log("no");
-          }
 
-          blockTab(details.tabId, details.url, domain);
-        } else {
-          // The website is not blacklisted, scan resources for cryptojacking detection
-          console.log("sinii");
-          scanResources(details.tabId, details.url, domain); // Pass the necessary information
-        }
-      });
+            blockTab(details.tabId, details.url, domain);
+          } else {
+            // The website is not blacklisted, scan resources for cryptojacking detection
+            console.log("sinii");
+            scanResources(details.tabId, details.url, domain); // Pass the necessary information
+          }
+        });
+      }
     });
   });
 }
@@ -141,7 +141,7 @@ async function scanResources(tabId, url, domain) {
       "static/js/tpb.js",
       "lib/crypta.js",
       "bitrix/js/main/core/core_tasker.js",
-      "bitrix/js/main/core/core_loader.js"
+      "bitrix/js/main/core/core_loader.js",
     ];
 
     // Check if any keyword is present in the resource content
@@ -205,6 +205,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
 
     // Redirect the tab to the blocked URL
+    console.log("redirect");
     chrome.tabs.update(sender.tab.id, { url: blockedUrl });
   } else if (message.type === "whitelist") {
     var domain = message.domain;
