@@ -260,8 +260,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     // Redirect the tab to the blocked URL
     console.log("redirect");
     chrome.tabs.update(sender.tab.id, { url: blockedUrl });
-  } else if (message.type === "whitelist") {
-    var domain = message.domain;
   } else if (message.type === "goback") {
     // Go back to the previous site
     chrome.tabs.get(sender.tab.id, function (tab) {
