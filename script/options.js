@@ -171,21 +171,44 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  var blockedCount = document.getElementById('blockedCount');
+  var blockedCount = document.getElementById("blockedCount");
   // Update the blocked count
   function updateBlockedCount() {
     // Fetch the blocked count from storage and update the DOM
-    chrome.storage.sync.get('blockedCount', function(data) {
+    chrome.storage.sync.get("blockedCount", function (data) {
       blockedCount.textContent = data.blockedCount || 0;
     });
   }
-    // Update the blocked count initially
-    updateBlockedCount();
-  
-    // Listen for changes to the blocked count
-    chrome.storage.onChanged.addListener(function(changes) {
-      if (changes.blockedCount) {
-        updateBlockedCount();
-      }
-    });
+  // Update the blocked count initially
+  updateBlockedCount();
+
+  // Listen for changes to the blocked count
+  chrome.storage.onChanged.addListener(function (changes) {
+    if (changes.blockedCount) {
+      updateBlockedCount();
+    }
+  });
+
+  // Function to send historyCount update to chart.js
+  function sendHistoryCountUpdate(historyCount) {
+    console.log("hi");
+    var iframe = document.getElementById('chartIframe');
+    var messages = { type: "historyCountUpdate", data: historyCount };
+    iframe.contentWindow.postMessage(messages, '*');
+  }
+
+  // Listen for storage changes
+  chrome.storage.onChanged.addListener(function (changes) {
+    if (changes.historyCount) {
+      var historyCount = changes.historyCount.newValue || [];
+      sendHistoryCountUpdate(historyCount);
+    }
+  });
+
+  // Get the historyCount from storage and send the initial update
+  chrome.storage.sync.get(["historyCount"], function (data) {
+    console.log("msk");
+    var historyCount = data.historyCount || [];
+    sendHistoryCountUpdate(historyCount);
+  });
 });

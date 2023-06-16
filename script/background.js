@@ -14,6 +14,35 @@ function isBlacklisted(url, callback) {
   });
 }
 
+function updateBlockedHistoryCount() {
+  // Get the current date
+  var currentDate = new Date().toLocaleDateString();
+
+  // Get the blocked count from storage
+  chrome.storage.sync.get(['dailyCount', 'historyCount'], function (data) {
+    var dailyCount = data.dailyCount || 0;
+    var historyCount = data.historyCount || [];
+    console.log("dt: ", dailyCount, historyCount);
+
+    // Check if there is an entry for the current date
+    var existingEntry = historyCount.find(function (entry) {
+      return entry.date === currentDate;
+    });
+
+    if (existingEntry) {
+      // If an entry for the current date exists, update the blocked count
+      existingEntry.count += 1;
+    } else {
+      // If no entry for the current date exists, create a new entry
+      dailyCount = 0;
+      historyCount.push({ date: currentDate, count: dailyCount + 1 });
+    }
+
+    // Update the blocked count and history in storage
+    chrome.storage.sync.set({ dailyCount: dailyCount + 1, historyCount: historyCount });
+  });
+}
+
 // Function to redirect the tab to the warning page
 function blockTab(tabId, url, domain) {
   var redirectUrl = chrome.runtime.getURL(
@@ -35,6 +64,7 @@ function blockTab(tabId, url, domain) {
     blockedHistory.push(domain);
     chrome.storage.sync.set({ blockedHistory: blockedHistory });
   });
+  updateBlockedHistoryCount();
 }
 
 // Function to handle tab navigation
