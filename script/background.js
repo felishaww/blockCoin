@@ -19,7 +19,7 @@ function updateBlockedHistoryCount() {
   var currentDate = new Date().toLocaleDateString();
 
   // Get the blocked count from storage
-  chrome.storage.sync.get(['dailyCount', 'historyCount'], function (data) {
+  chrome.storage.sync.get(["dailyCount", "historyCount"], function (data) {
     var dailyCount = data.dailyCount || 0;
     var historyCount = data.historyCount || [];
     console.log("dt: ", dailyCount, historyCount);
@@ -39,7 +39,10 @@ function updateBlockedHistoryCount() {
     }
 
     // Update the blocked count and history in storage
-    chrome.storage.sync.set({ dailyCount: dailyCount + 1, historyCount: historyCount });
+    chrome.storage.sync.set({
+      dailyCount: dailyCount + 1,
+      historyCount: historyCount,
+    });
   });
 }
 
@@ -177,12 +180,44 @@ async function scanResources(tabId, url, domain) {
       console.log("Detected keywords:", detectedKeywords);
       // block tab
       blockTab(tabId, url, domain);
+    } else {
+      //Do CPUU Monitoring if cryptojacking activity is not detected after scanning
+      cpuMonitoring(tabId, url, domain);
     }
   } catch (error) {
     console.error("Error fetching resource:", error);
   }
 }
 
+// Function to monitor CPU Usage to detect cryptojacking
+async function cpuMonitoring(tabId, url, domain) {
+  console.log("Monitoring CPU:", url);
+
+  var idle = 0;
+  var totalCPU = 0;
+  var treshold = 90; //cpu treshold to indicate cryptojacking
+
+  setInterval(function () {
+    chrome.system.cpu.getInfo(function (info) {
+      idle = 0;
+      totalCPU = 0;
+
+      //Get CPU idle percentage from each processors
+      info.processors.forEach(function (processor) {
+        idle += processor.usage.idle;
+        totalCPU += processor.usage.total;
+      });
+      var cpuUsagePercentage = 100 - ((idle / totalCPU) * 100);
+      console.log("CPU usage percentage:", cpuUsagePercentage);
+
+      //When CPU usage is higher than treshold, then its potential cryptojacking
+      if (cpuUsagePercentage >= treshold) {
+        // block tab
+        blockTab(tabId, url, domain);
+      }
+    });
+  }, 10000); // Run every 10 seconds
+}
 
 // Message listener from the warning page
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
@@ -244,5 +279,3 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     });
   }
 });
-
-
