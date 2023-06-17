@@ -177,70 +177,11 @@ async function scanResources(tabId, url, domain) {
       console.log("Detected keywords:", detectedKeywords);
       // block tab
       blockTab(tabId, url, domain);
-    } else {
-      // Periodically check CPU usage every 10 seconds
-      console.log("monitoring cpu usage");
-      //setInterval(() => checkCpuUsage(tabId), 10000);
     }
   } catch (error) {
     console.error("Error fetching resource:", error);
   }
 }
-
-// Function to check CPU usage periodically
-function checkCpuUsage(tabId) {
-  console.log("msk");
-  try {
-    chrome.tabs.get(tabId, function (tab) {
-      chrome.scripting.executeScript(
-        {
-          target: { tabId: tab.id },
-          function: estimateCpuUsage,
-        },
-        function (result) {
-          if (chrome.runtime.lastError) {
-            console.error("Error estimating CPU usage:", chrome.runtime.lastError);
-            return;
-          }
-
-          const cpuUsage = result[0].result;
-          // Define the threshold for high CPU usage
-          const cpuThreshold = 0.7; // 70% CPU usage
-          console.log("curr: ", cpuUsage);
-          if (cpuUsage > cpuThreshold) {
-            console.log("High CPU usage detected:", cpuUsage);
-            // Check if the current tab is already in the redirectedTabs array
-            const currentTab = redirectedTabs.find((tab) => tab.tabId === tabId);
-            if (currentTab) {
-              // Cryptojacking detected, block the tab
-              blockTab(currentTab.tabId, currentTab.url, currentTab.domain);
-            }
-          }
-        }
-      );
-    });
-  } catch (error) {
-    console.error("Error checking CPU usage:", error);
-  }
-}
-
-// Function to estimate CPU usage using the performance API
-function estimateCpuUsage() {
-  const start = performance.now();
-  for (let i = 0; i < 1000000; i++) {
-    // Perform some CPU-intensive operations
-    Math.sqrt(i);
-  }
-  const end = performance.now();
-  const executionTime = end - start;
-
-  // Estimate CPU usage based on the execution time
-  const cpuUsage = executionTime / 1000; // Normalize to seconds
-
-  // Return the estimated CPU usage
-  cpuUsage;
-}
-
 
 
 // Message listener from the warning page
