@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="./style/chart.css" />
+  </head>
+  <body>
+    <div class="chart">
+      <canvas id="summaryChart"></canvas>
+    </div>
+    <script src="./script/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      counts.unshift(0);
+      dates.unshift("Start");
+      console.log("Counts:", counts);
+      console.log("Dates:", dates);
+
+      const ctx = document.getElementById("summaryChart").getContext("2d");
+      let delayed;
+
+      let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+      gradient.addColorStop(0, "rgba(43,163,134,1)");
+      gradient.addColorStop(1, "rgba(30,31,43,0.1)");
+
+      new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: "Blocked Count",
+              data: counts,
+              borderWidth: 1,
+              fill: true,
+              backgroundColor: gradient,
+              borderColor: "rgb(188, 188, 188)",
+              pointBackgroundColor: "rgb(188, 188, 188)",
+              tennsion: 0.4,
+            },
+          ],
+        },
+        options: {
+          hitRadius: 30,
+          responsive: true,
+          hoverRadius: 8,
+          animation: {
+            onComplete: () => {
+              delayed = true;
+            },
+            delay: (context) => {
+              let delay = 0;
+              if (
+                context.type === "data" &&
+                context.mode === "default" &&
+                !delayed
+              ) {
+                delay = context.dataIndex * 300 + context.datasetIndex * 100;
+              }
+              return delay;
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
