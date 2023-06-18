@@ -27,13 +27,5 @@
     "48": "icons/48.png",
     "128": "icons/128.png"
   },
-  "options_page": "options.html",
-  "sandbox": {
-    "pages": [
-      "chart.html"
-    ]
-  },
-  "content_security_policy": {
-    "sandbox": "sandbox allow-scripts; script-src 'unsafe-inline' 'self' https://cdn.jsdelivr.net"
-  }
+  "options_page": "options.html"
 }

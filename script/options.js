@@ -189,28 +189,105 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Function to send historyCount update to chart.js
-  function sendHistoryCountUpdate(historyCount) {
-    console.log("hi");
-    var iframe = document.getElementById('chartIframe');
-    var messages = { type: "historyCountUpdate", data: historyCount };
-    console.log("message: ", messages);
-    iframe.contentWindow.postMessage(messages, '*');
-  }
-
   // Listen for storage changes
   chrome.storage.onChanged.addListener(function (changes) {
-    if (changes.historyCount) {
-      var historyCount = changes.historyCount.newValue || [];
-      sendHistoryCountUpdate(historyCount);
+    if (changes && changes.historyCount && changes.historyCount.newValue) {
+      var historyCount = changes.historyCount.newValue;
+      constructChart(historyCount);
     }
   });
 
   // Get the historyCount from storage and send the initial update
   chrome.storage.sync.get(["historyCount"], function (data) {
-    console.log("msk");
-    var historyCount = data.historyCount || [];
-    sendHistoryCountUpdate(historyCount);
+    if (data && data.historyCount) {
+      var historyCount = data.historyCount;
+      constructChart(historyCount);
+    }
   });
-});
 
+  //function that makes chart
+  function constructChart(historyCount) {
+    //chart data
+    var chartjson = {
+      title: "",
+      data: historyCount,
+      xtitle: "",
+      ytitle: "Blocked Domain",
+      ymax: 100,
+      ykey: "count",
+      xkey: "date",
+    };
+
+    //chart colors
+    var colors = ["one", "two", "three", "four", "five", "six", "seven"];
+
+    //constants
+    var TROW = "tr",
+      TDATA = "td";
+    
+    //get highest count value 
+    var maxCount = Math.max(...historyCount.map(o => o.count));
+
+    var chart = document.createElement("div");
+    //create the chart canvas
+    var barchart = document.createElement("table");
+    //create the title row
+    var titlerow = document.createElement(TROW);
+    //create the title data
+    var titledata = document.createElement(TDATA);
+    //make the colspan to number of records
+    titledata.setAttribute("colspan", chartjson.data.length + 1);
+    titledata.setAttribute("class", "charttitle");
+    titledata.innerText = chartjson.title;
+    titlerow.appendChild(titledata);
+    barchart.appendChild(titlerow);
+    chart.appendChild(barchart);
+
+    //create the bar row
+    var barrow = document.createElement(TROW);
+
+    //lets add data to the chart
+    for (var i = 0; i < chartjson.data.length; i++) {
+      barrow.setAttribute("class", "bars");
+      //create the bar data
+      var bardata = document.createElement(TDATA);
+      var bar = document.createElement("div");
+      bar.setAttribute("class", (colors[i] + " bars"));
+
+      var count = chartjson.data[i][chartjson.ykey];
+      bar.style.height = ((count/maxCount)*100) + '%';
+      bardata.innerText = count;
+      bardata.appendChild(bar);
+      barrow.appendChild(bardata);
+    }
+
+    //create legends
+    var legendrow = document.createElement(TROW);
+    var legend = document.createElement(TDATA);
+    legend.setAttribute("class", "legend");
+    legend.setAttribute("colspan", chartjson.data.length);
+
+    var dataLength = 7;
+    if(chartjson.data.length < 7){
+      dataLength = chartjson.data.length;
+    }
+
+    //add legend data
+    for (var i = 0; i < dataLength; i++) {
+      var legbox = document.createElement("span");
+      legbox.setAttribute("class", "legbox");
+      var barname = document.createElement("span");
+      barname.setAttribute("class", colors[i] + " xaxisname");
+      var bartext = document.createElement("span");
+      bartext.innerText = chartjson.data[i][chartjson.xkey];
+      legbox.appendChild(barname);
+      legbox.appendChild(bartext);
+      legend.appendChild(legbox);
+    }
+    barrow.appendChild(legend);
+    barchart.appendChild(barrow);
+    barchart.appendChild(legendrow);
+    chart.appendChild(barchart);
+    document.getElementById("chart").innerHTML = chart.outerHTML;
+  }
+});

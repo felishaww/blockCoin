@@ -1,10 +1,8 @@
-html,
-body {
-  font-family: Consolas, monaco, monospace;
-}
+
 
 #chart {
   padding: 20px;
+  margin-top: 50px;
 }
 
 table {
@@ -43,89 +41,39 @@ table {
   float: left;
 }
 
+.bars{
+    width: 3em;
+    border-radius: 5px;
+    margin-top: 5px;
+    border: 1px solid #71717b;
+}
 
-/*Flat UI colors*/
 
+/*bar colors*/
 .one {
-  background: #16A085;
+  background: #FFFFFF;
 }
 
 .two {
-  background: #2ECC71;
+  background: #B0F9E7;
 }
 
 .three {
-  background: #27AE60;
+  background: #2BA386;
 }
 
 .four {
-  background: #3498DB;
+  background: #1E6B59;
 }
 
 .five {
-  background: #2980B9;
+  background: #0F382F;
 }
 
 .six {
-  background: #9B59B6;
+  background: #081E19;
 }
 
 .seven {
-  background: #8E44AD;
-}
-
-.eight {
-  background: #34495E;
-}
-
-.nine {
-  background: #2C3E50;
-}
-
-.ten {
-  background: #22313f;
-}
-
-.eleven {
-  background: #F1C40F;
-}
-
-.twelve {
-  background: #F39C12;
-}
-
-.thirteen {
-  background: #E67E22;
-}
-
-.fourteen {
-  background: #D35400;
-}
-
-.fifteen {
-  background: #E74C3C;
-}
-
-.sixteen {
-  background: #C0392B;
-}
-
-.seventeen {
-  background: #ECF0F1;
-}
-
-.seventeen.clouds {
-  color: #BDC3C7;
-}
-
-.eighteen {
-  background: #BDC3C7;
-}
-
-.nineteen {
-  background: #95A5A6;
-}
-
-.twenty {
-  background: #7F8C8D;
+  background: #000000;
 }
