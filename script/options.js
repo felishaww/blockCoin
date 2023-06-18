@@ -194,6 +194,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("hi");
     var iframe = document.getElementById('chartIframe');
     var messages = { type: "historyCountUpdate", data: historyCount };
+    console.log("message: ", message);
     iframe.contentWindow.postMessage(messages, '*');
   }
 
