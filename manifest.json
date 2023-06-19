@@ -15,10 +15,6 @@
     "tabs",
     "storage",
     "system.cpu",
-    "notifications",
-    "declarativeNetRequest",
-    "declarativeNetRequestFeedback",
-    "system.cpu",
     "webNavigation"
   ],
   "host_permissions": ["*://*/*"],
