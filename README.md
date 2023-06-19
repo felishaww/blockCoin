@@ -1,5 +1,5 @@
 # <img src="/icons/48.png" align="absmiddle">  BlockCoin
-BlockCoin is a browser extension designed to prevent cryptocurrency miners from operating within web browsers. The purpose of developing this extension is to facilitate our thesis research, which involves the analysis of cryptojacking activities.
+BlockCoin is a chrome extension designed to prevent cryptocurrency miners from operating within web browsers. The purpose of developing this extension is to facilitate our thesis research, which involves the analysis of cryptojacking activities.
 
 
 # How does it work?
