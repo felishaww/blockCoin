@@ -22,7 +22,6 @@ function updateBlockedHistoryCount() {
   chrome.storage.sync.get(["dailyCount", "historyCount"], function (data) {
     var dailyCount = data.dailyCount || 0;
     var historyCount = data.historyCount || [];
-    console.log("dt: ", dailyCount, historyCount);
 
     // Check if there is an entry for the current date
     var existingEntry = historyCount.find(function (entry) {
@@ -130,7 +129,6 @@ chrome.webNavigation.onCompleted.addListener(handleNavigation, {
 
 // Function to scan text-based resources for cryptojacking detection
 async function scanResources(tabId, url, domain) {
-  console.log("Scanning resource:", url);
 
   try {
     // Fetch the resource content
@@ -139,6 +137,9 @@ async function scanResources(tabId, url, domain) {
 
     // Define cryptojacking keywords
     const cryptojackingKeywords = [
+      "-coin-hive.js",
+      "-crypto-miner/",
+      "-monero-miner-",
       "miner.start",
       "deepMiner.j",
       "deepMiner.min.j",
@@ -168,6 +169,35 @@ async function scanResources(tabId, url, domain) {
       "lib/crypta.js",
       "bitrix/js/main/core/core_tasker.js",
       "bitrix/js/main/core/core_loader.js",
+      "lhnhelpouttab-current.min.js",
+      "/miner.js",
+      "/miner.min.js",
+      "/miner?key=",
+      "/minera.js",
+      "/minero-proxy-",
+      "/minescripts.js",
+      "/nano.wasm",
+      "/noblock.js",
+      "/obfus.min.js",
+      "/projectpoi.min.js",
+      "/poolstatus?",
+      "/safelinkconverter.js",
+      "/script_cry.js",
+      "/coin-hive-proxy-",
+      "/coinblind.js",
+      "/coinblind_beta.",
+      "/coinGofile.",
+      "/coinhive-proxy-",
+      "/coinhive.min.js",
+      "/coinlab.js",
+      "/compact_miner?",
+      "/crn.wasm",
+      "/crypta.js",
+      "/browsermine.js",
+      "/c-hive.js",
+      "/c.wasm",
+      "/cloudcoins.js",
+      "/cloudcoins.min.js",
     ];
 
     // Check if any keyword is present in the resource content
@@ -207,8 +237,7 @@ async function cpuMonitoring(tabId, url, domain) {
         idle += processor.usage.idle;
         totalCPU += processor.usage.total;
       });
-      var cpuUsagePercentage = 100 - ((idle / totalCPU) * 100);
-      console.log("CPU usage percentage:", cpuUsagePercentage);
+      var cpuUsagePercentage = 100 - (idle / totalCPU) * 100;
 
       //When CPU usage is higher than treshold, then its potential cryptojacking
       if (cpuUsagePercentage >= treshold) {
@@ -227,7 +256,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     var blockedUrl = urlParams.get("url");
     let blockedDomain = new URL(blockedUrl).hostname;
     var isWhitelisted = message.whitelist;
-    console.log("iswhitelisted " + isWhitelisted);
 
     // Check if there is an existing entry with the same tab ID
     var existingTab = redirectedTabs.find(function (tab) {
@@ -264,7 +292,6 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     }
 
     // Redirect the tab to the blocked URL
-    console.log("redirect");
     chrome.tabs.update(sender.tab.id, { url: blockedUrl });
   } else if (message.type === "goback") {
     // Go back to the previous site
