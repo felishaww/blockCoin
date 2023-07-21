@@ -1,10 +1,54 @@
-// Load the blacklist from the JSON file
-function loadBlacklist(callback) {
-  fetch(chrome.runtime.getURL("../blacklist.json"))
-    .then((response) => response.json())
-    .then((data) => callback(data))
-    .catch((error) => console.error("Error loading blacklist:", error));
+// Load the blacklist from nocoin URL
+function fetchTextContent(url) {
+  return fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    });
 }
+
+function loadBlacklist(callback) {
+  const textFileUrl = 'https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt';
+
+  fetchTextContent(textFileUrl)
+    .then(data => {
+      // If the text file is successfully fetched, parse the content
+      callback(parseBlacklistContent(data));
+    })
+    .catch(error => {
+      console.error('Error loading text file:', error);
+      // If the text file fetch fails, load the 'blacklist.json' file
+      fetch(chrome.runtime.getURL('../blacklist.json'))
+        .then(response => response.json())
+        .then(data => callback(data))
+        .catch(error => console.error('Error loading blacklist:', error));
+    });
+}
+
+function parseBlacklistContent(content) {
+  const lines = content.split('\n');
+  const links = [];
+
+  let isInThirdPartyBlockingSection = false;
+
+  lines.forEach((line) => {
+    if (line.startsWith('! Third Party blocking')) {
+      isInThirdPartyBlockingSection = true;
+    } else if (line.startsWith('! ')) {
+      isInThirdPartyBlockingSection = false;
+    } else if (isInThirdPartyBlockingSection) {
+      const linkMatch = line.match(/^\|\|(.+?)\^(\$third-party)?/);
+      if (linkMatch) {
+        links.push(linkMatch[1]);
+      }
+    }
+  });
+  console.log("Blacklist Content: ", links);
+  return links;
+}
+
 
 // Check if the accessed website is blacklisted
 function isBlacklisted(url, callback) {

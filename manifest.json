@@ -1,6 +1,6 @@
 {
   "name": "BlockCoin",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "BlockCoin is a browser extension designed to prevent cryptocurrency miners from operating within web browsers.",
   "manifest_version": 3,
   "author": "Felisha M. and Sharleen E.",
