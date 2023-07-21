@@ -1,42 +1,42 @@
 // Load the blacklist from nocoin URL
 function fetchTextContent(url) {
-  return fetch(url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.text();
-    });
+  return fetch(url).then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.text();
+  });
 }
 
 function loadBlacklist(callback) {
-  const textFileUrl = 'https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt';
+  const textFileUrl =
+    "https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt";
 
   fetchTextContent(textFileUrl)
-    .then(data => {
+    .then((data) => {
       // If the text file is successfully fetched, parse the content
       callback(parseBlacklistContent(data));
     })
-    .catch(error => {
-      console.error('Error loading text file:', error);
+    .catch((error) => {
+      console.error("Error loading text file:", error);
       // If the text file fetch fails, load the 'blacklist.json' file
-      fetch(chrome.runtime.getURL('../blacklist.json'))
-        .then(response => response.json())
-        .then(data => callback(data))
-        .catch(error => console.error('Error loading blacklist:', error));
+      fetch(chrome.runtime.getURL("../blacklist.json"))
+        .then((response) => response.json())
+        .then((data) => callback(data))
+        .catch((error) => console.error("Error loading blacklist:", error));
     });
 }
 
 function parseBlacklistContent(content) {
-  const lines = content.split('\n');
+  const lines = content.split("\n");
   const links = [];
 
   let isInThirdPartyBlockingSection = false;
 
   lines.forEach((line) => {
-    if (line.startsWith('! Third Party blocking')) {
+    if (line.startsWith("! Third Party blocking")) {
       isInThirdPartyBlockingSection = true;
-    } else if (line.startsWith('! ')) {
+    } else if (line.startsWith("! ")) {
       isInThirdPartyBlockingSection = false;
     } else if (isInThirdPartyBlockingSection) {
       const linkMatch = line.match(/^\|\|(.+?)\^(\$third-party)?/);
@@ -49,6 +49,45 @@ function parseBlacklistContent(content) {
   return links;
 }
 
+function loadKeywords(callback) {
+  const textFileUrl =
+    "https://raw.githubusercontent.com/hoshsadiq/adblock-nocoin-list/master/nocoin.txt";
+
+  fetchTextContent(textFileUrl)
+    .then((data) => {
+      // If the text file is successfully fetched, parse the content
+      callback(parseResourceScanList(data));
+    })
+    .catch((error) => {
+      console.error("Error loading text file:", error);
+      // If the text file fetch fails, load the 'keywords.json' file
+      fetch(chrome.runtime.getURL("../keywords.json"))
+        .then((response) => response.json())
+        .then((data) => callback(data))
+        .catch((error) => console.error("Error loading keywords:", error));
+    });
+}
+
+function parseResourceScanList(content) {
+  if (!content) {
+    return [];
+  }
+
+  const lines = content.split(/\r?\n/);
+  let isGeneralBlockSection = false;
+  const links = [];
+
+  for (const line of lines) {
+    if (line.includes("! General blocking")) {
+      isGeneralBlockSection = true;
+    } else if (line.startsWith("! ")) {
+      isGeneralBlockSection = false;
+    } else if (isGeneralBlockSection) {
+      links.push(line);
+    }
+  }
+  return links;
+}
 
 // Check if the accessed website is blacklisted
 function isBlacklisted(url, callback) {
@@ -173,91 +212,27 @@ chrome.webNavigation.onCompleted.addListener(handleNavigation, {
 
 // Function to scan text-based resources for cryptojacking detection
 async function scanResources(tabId, url, domain) {
-
   try {
     // Fetch the resource content
     const response = await fetch(url);
     const text = await response.text();
 
-    // Define cryptojacking keywords
-    const cryptojackingKeywords = [
-      "-coin-hive.js",
-      "-crypto-miner/",
-      "-monero-miner-",
-      "miner.start",
-      "deepMiner.j",
-      "deepMiner.min.j",
-      "?proxy=wss://",
-      "?proxy=ws://",
-      "coinhive.min.js",
-      "monero-miner.js",
-      "wasmminer.wasm",
-      "wasmminer.js",
-      "cn-asmjs.min.js",
-      "plugins/aj-cryptominer",
-      "plugins/ajcryptominer",
-      "plugins/wp-monero-miner-pro",
-      "lib/crlt.js",
-      "pool/direct.js",
-      "n.2.1.js",
-      "n.2.1.l*.js",
-      "gridcash.js",
-      "worker-asmjs.min.js",
-      "?perfekt=wss://",
-      "vbb/me0w.js",
-      "webmr.js",
-      "webxmr.js",
-      "miner.js",
-      "webmr4.js",
-      "static/js/tpb.js",
-      "lib/crypta.js",
-      "bitrix/js/main/core/core_tasker.js",
-      "bitrix/js/main/core/core_loader.js",
-      "lhnhelpouttab-current.min.js",
-      "/miner.js",
-      "/miner.min.js",
-      "/miner?key=",
-      "/minera.js",
-      "/minero-proxy-",
-      "/minescripts.js",
-      "/nano.wasm",
-      "/noblock.js",
-      "/obfus.min.js",
-      "/projectpoi.min.js",
-      "/poolstatus?",
-      "/safelinkconverter.js",
-      "/script_cry.js",
-      "/coin-hive-proxy-",
-      "/coinblind.js",
-      "/coinblind_beta.",
-      "/coinGofile.",
-      "/coinhive-proxy-",
-      "/coinhive.min.js",
-      "/coinlab.js",
-      "/compact_miner?",
-      "/crn.wasm",
-      "/crypta.js",
-      "/browsermine.js",
-      "/c-hive.js",
-      "/c.wasm",
-      "/cloudcoins.js",
-      "/cloudcoins.min.js",
-    ];
+    loadKeywords(function (cryptojackingKeywords) {
+      // Check if any keyword is present in the resource content
+      const detectedKeywords = cryptojackingKeywords.filter((keyword) =>
+        text.includes(keyword)
+      );
 
-    // Check if any keyword is present in the resource content
-    const detectedKeywords = cryptojackingKeywords.filter((keyword) =>
-      text.includes(keyword)
-    );
-
-    if (detectedKeywords.length > 0) {
-      console.log("Cryptojacking detected in resource:", url);
-      console.log("Detected keywords:", detectedKeywords);
-      // block tab
-      blockTab(tabId, url, domain);
-    } else {
-      //Do CPUU Monitoring if cryptojacking activity is not detected after scanning
-      cpuMonitoring(tabId, url, domain);
-    }
+      if (detectedKeywords.length > 0) {
+        console.log("Cryptojacking detected in resource:", url);
+        console.log("Detected keywords:", detectedKeywords);
+        // block tab
+        blockTab(tabId, url, domain);
+      } else {
+        //Do CPU Monitoring if cryptojacking activity is not detected after scanning
+        cpuMonitoring(tabId, url, domain);
+      }
+    });
   } catch (error) {
     console.error("Error fetching resource:", error);
   }
